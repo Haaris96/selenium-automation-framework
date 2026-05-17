@@ -64,6 +64,12 @@ public abstract class BasePage {
         element.click();
     }
 
+    protected void click(WebElement element, WaitStrategy strategy, String elementName) {
+        log.info("Clicking: {}", elementName);
+        ExtentLogger.info("Click on: " + elementName);
+        resolveElement(element, strategy).click();
+    }
+
     protected void jsClick(WebElement element, String elementName) {
         log.info("JS Click: {}", elementName);
         JavaScriptUtils.click(element);
@@ -390,6 +396,14 @@ public abstract class BasePage {
             case VISIBLE   -> WaitUtils.waitForVisibility(locator);
             case PRESENCE  -> WaitUtils.waitForPresence(locator);
             case NONE      -> DriverManager.getDriver().findElement(locator);
+        };
+    }
+
+    private WebElement resolveElement(WebElement element, WaitStrategy strategy) {
+        return switch (strategy) {
+            case CLICKABLE -> WaitUtils.waitForElementToBeClickable(element);
+            case VISIBLE   -> WaitUtils.waitForVisibility(element);
+            case PRESENCE, NONE -> element;
         };
     }
 }
