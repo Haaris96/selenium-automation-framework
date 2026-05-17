@@ -1,0 +1,27 @@
+# Maven
+target/
+*.class
+
+# IDE
+.idea/
+*.iml
+.project
+.classpath
+.settings/
+*.swp
+
+# Reports & Artifacts (generated at runtime)
+reports/
+screenshots/
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment secrets — NEVER commit these
+*.env
+secrets.properties
+
+# Cucumber publish token
+.cucumber-publish-token

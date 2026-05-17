@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="30">
+
+    <Properties>
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Property>
+        <Property name="LOG_DIR">logs</Property>
+    </Properties>
+
+    <Appenders>
+
+        <!-- Console Appender with color -->
+        <Console name="ConsoleAppender" target="SYSTEM_OUT">
+            <PatternLayout>
+                <pattern>%d{HH:mm:ss.SSS} [%t] %highlight{%-5level}{FATAL=red blink, ERROR=red, WARN=yellow bold, INFO=green, DEBUG=blue, TRACE=white} %logger{36} - %msg%n</pattern>
+            </PatternLayout>
+        </Console>
+
+        <!-- Rolling File Appender - Main log -->
+        <RollingFile name="FileAppender"
+                     fileName="${LOG_DIR}/framework.log"
+                     filePattern="${LOG_DIR}/archive/framework-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="30"/>
+        </RollingFile>
+
+        <!-- Rolling File Appender - Test execution log -->
+        <RollingFile name="TestExecutionAppender"
+                     fileName="${LOG_DIR}/test-execution.log"
+                     filePattern="${LOG_DIR}/archive/test-execution-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="5MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+
+        <!-- Error log -->
+        <RollingFile name="ErrorAppender"
+                     fileName="${LOG_DIR}/errors.log"
+                     filePattern="${LOG_DIR}/archive/errors-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+
+    </Appenders>
+
+    <Loggers>
+
+        <!-- Framework logger -->
+        <Logger name="com.framework" level="DEBUG" additivity="false">
+            <AppenderRef ref="ConsoleAppender"/>
+            <AppenderRef ref="FileAppender"/>
+            <AppenderRef ref="TestExecutionAppender"/>
+            <AppenderRef ref="ErrorAppender"/>
+        </Logger>
+
+        <!-- Suppress noisy third-party loggers -->
+        <Logger name="org.openqa.selenium" level="WARN" additivity="false">
+            <AppenderRef ref="ConsoleAppender"/>
+        </Logger>
+        <Logger name="io.github.bonigarcia" level="WARN" additivity="false">
+            <AppenderRef ref="ConsoleAppender"/>
+        </Logger>
+        <Logger name="org.apache" level="WARN" additivity="false">
+            <AppenderRef ref="ConsoleAppender"/>
+        </Logger>
+
+        <Root level="INFO">
+            <AppenderRef ref="ConsoleAppender"/>
+            <AppenderRef ref="FileAppender"/>
+        </Root>
+
+    </Loggers>
+
+</Configuration>

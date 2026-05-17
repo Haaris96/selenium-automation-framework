@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.framework</groupId>
+    <artifactId>selenium-automation-framework</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>Production Grade Selenium Automation Framework</name>
+    <description>BDD Selenium framework with TestNG, Cucumber, ExtentReports, and CI/CD support</description>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Dependency versions -->
+        <selenium.version>4.18.1</selenium.version>
+        <testng.version>7.9.0</testng.version>
+        <cucumber.version>7.15.0</cucumber.version>
+        <extent.version>5.1.1</extent.version>
+        <extent.cucumber.adapter.version>1.14.0</extent.cucumber.adapter.version>
+        <poi.version>5.2.5</poi.version>
+        <log4j.version>2.22.1</log4j.version>
+        <webdrivermanager.version>5.7.0</webdrivermanager.version>
+        <mysql.connector.version>8.0.33</mysql.connector.version>
+        <jackson.version>2.16.1</jackson.version>
+        <commons.io.version>2.15.1</commons.io.version>
+        <picocontainer.version>7.15.0</picocontainer.version>
+        <!-- Default execution parameters (override via -D flags or Jenkins) -->
+        <browser>chrome</browser>
+        <env>qa</env>
+        <headless>false</headless>
+        <suite>testng.xml</suite>
+    </properties>
+
+    <dependencies>
+
+        <!-- ==================== SELENIUM ==================== -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+
+        <!-- ==================== TESTNG ==================== -->
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testng.version}</version>
+        </dependency>
+
+        <!-- ==================== CUCUMBER ==================== -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>${cucumber.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-testng</artifactId>
+            <version>${cucumber.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-picocontainer</artifactId>
+            <version>${picocontainer.version}</version>
+        </dependency>
+
+        <!-- ==================== EXTENT REPORTS ==================== -->
+        <dependency>
+            <groupId>com.aventstack</groupId>
+            <artifactId>extentreports</artifactId>
+            <version>${extent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>tech.grasshopper</groupId>
+            <artifactId>extentreports-cucumber7-adapter</artifactId>
+            <version>${extent.cucumber.adapter.version}</version>
+        </dependency>
+
+        <!-- ==================== APACHE POI (EXCEL) ==================== -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>${poi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${poi.version}</version>
+        </dependency>
+
+        <!-- ==================== LOGGING (LOG4J2) ==================== -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+
+        <!-- ==================== WEBDRIVER MANAGER ==================== -->
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>${webdrivermanager.version}</version>
+        </dependency>
+
+        <!-- ==================== DATABASE (MYSQL) ==================== -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.connector.version}</version>
+        </dependency>
+
+        <!-- ==================== JACKSON (JSON) ==================== -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <!-- ==================== COMMONS IO ==================== -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons.io.version}</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <!-- Maven Compiler Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.12.1</version>
+                <configuration>
+                    <source>11</source>
+                    <target>11</target>
+                </configuration>
+            </plugin>
+
+            <!-- Maven Surefire Plugin - Central test execution point -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+                <configuration>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>${suite}</suiteXmlFile>
+                    </suiteXmlFiles>
+                    <systemPropertyVariables>
+                        <browser>${browser}</browser>
+                        <env>${env}</env>
+                        <headless>${headless}</headless>
+                    </systemPropertyVariables>
+                    <testFailureIgnore>false</testFailureIgnore>
+                    <rerunFailingTestsCount>1</rerunFailingTestsCount>
+                </configuration>
+            </plugin>
+
+            <!-- Maven Resources Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+        </plugins>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+    </build>
+
+    <!-- Profiles for environment-specific execution -->
+    <profiles>
+        <profile>
+            <id>regression</id>
+            <properties>
+                <suite>testng.xml</suite>
+            </properties>
+        </profile>
+        <profile>
+            <id>parallel</id>
+            <properties>
+                <suite>testng-parallel.xml</suite>
+            </properties>
+        </profile>
+        <profile>
+            <id>smoke</id>
+            <properties>
+                <suite>testng-smoke.xml</suite>
+            </properties>
+        </profile>
+    </profiles>
+
+</project>

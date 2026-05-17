@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<!--
+  Parallel execution suite.
+  Activate: mvn test -Pparallel  OR  mvn test -Dsuite=testng-parallel.xml
+-->
+<suite name="Selenium Automation Framework - Parallel Suite"
+       verbose="2"
+       thread-count="4"
+       parallel="tests"
+       data-provider-thread-count="4">
+
+    <listeners>
+        <listener class-name="com.framework.listeners.TestListener"/>
+        <listener class-name="com.framework.listeners.ExtentReportListener"/>
+        <listener class-name="com.framework.retry.RetryAnnotationTransformer"/>
+    </listeners>
+
+    <test name="Login Tests - Chrome" parallel="methods" thread-count="2">
+        <parameter name="browser" value="chrome"/>
+        <parameter name="env"     value="qa"/>
+        <classes>
+            <class name="com.framework.tests.LoginTest"/>
+        </classes>
+    </test>
+
+    <test name="Shopping Tests - Chrome" parallel="methods" thread-count="2">
+        <parameter name="browser" value="chrome"/>
+        <parameter name="env"     value="qa"/>
+        <classes>
+            <class name="com.framework.tests.ShoppingTest"/>
+        </classes>
+    </test>
+
+    <!-- Parallel Cucumber runner -->
+    <test name="Cucumber BDD Tests - Parallel">
+        <parameter name="browser" value="chrome"/>
+        <classes>
+            <class name="com.framework.runners.ParallelCucumberRunner"/>
+        </classes>
+    </test>
+
+</suite>
