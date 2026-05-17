@@ -98,6 +98,7 @@ public abstract class BasePage {
     }
 
     protected void type(WebElement element, String text, String elementName) {
+        WaitUtils.waitForVisibility(element);
         element.clear();
         element.sendKeys(text);
         log.info("Typed '{}' into: {}", text, elementName);

@@ -66,7 +66,12 @@ public class CheckoutPage extends BasePage {
     }
 
     public boolean isOrderComplete() {
-        return isDisplayed(ORDER_COMPLETE_LOCATOR);
+        try {
+            WaitUtils.waitForVisibility(ORDER_COMPLETE_LOCATOR);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public String getErrorMessage() {
@@ -74,6 +79,7 @@ public class CheckoutPage extends BasePage {
     }
 
     public String getTotalAmount() {
+        WaitUtils.waitForVisibility(totalLabel);
         return getText(totalLabel);
     }
 }

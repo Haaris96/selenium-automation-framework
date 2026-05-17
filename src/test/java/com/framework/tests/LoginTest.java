@@ -21,7 +21,7 @@ public class LoginTest extends BaseTest {
 
     private LoginPage loginPage;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void initPage() {
         loginPage = new LoginPage();
     }
