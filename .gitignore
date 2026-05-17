@@ -10,10 +10,10 @@ target/
 .settings/
 *.swp
 
-# Reports & Artifacts (generated at runtime)
-reports/
-screenshots/
-logs/
+# Reports & Artifacts (generated at runtime — root level only)
+/reports/
+/screenshots/
+/logs/
 
 # OS
 .DS_Store
